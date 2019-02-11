@@ -25,20 +25,34 @@ namespace Access
         public MainWindow()
         {
             InitializeComponent();
-            cn = new OleDbConnection("Classwork 6.accdb");
+            cn = new OleDbConnection("Provider = Microsoft.ACE.OLEDB.12.0; Data Source = |DataDirectory|Classwork 6.accdb");
+            cn.Open();
         }
 
         private void SeeAssets_Click(object sender, RoutedEventArgs e)
         {
-            string query = "select * from Assets";
-            OleDbCommand cmd = new OleDbCommand(query, cn);
-            cn.Open();
+            string AssetID = "select * from Assets";
+            OleDbCommand cmd = new OleDbCommand(AssetID, cn);
             OleDbDataReader read = cmd.ExecuteReader();
             string data = "";
             while (read.Read())
             {
-                data += read[0].ToString() + "\n";
+                data += "EmployeeID: " + read[0].ToString() + "  AssestID: " + read[1].ToString() + "  Description: " + read[2].ToString() + "\n";
             }
+            Text1.Text = data;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string EmployeeID = "select * from Employees";
+            OleDbCommand cmd = new OleDbCommand(EmployeeID, cn);
+            OleDbDataReader read = cmd.ExecuteReader();
+            string data = "";
+            while (read.Read())
+            {
+                data += "EmployeeID: " + read[0].ToString() + "  FirstName: " + read[1].ToString() + "  LastName: " + read[2].ToString() + "\n";
+            }
+            Text2.Text = data;
         }
     }
 }
